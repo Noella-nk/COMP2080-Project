@@ -50,20 +50,50 @@ public class Main
 
     public static void OnePlayer()
     {
+        // Sayuni will do this: 
+        // 2) If the user selects 1 player (versus Minimax AI) 
+        // a. The Human player should be asked their name 
+        // b. The player must be prompted to choose their symbol (‘X’ or O’) 
+        // c. The player with symbol ‘X’ should go first (computer or human player). 
+        // d. The present board state will be displayed and: 
+        // 1. If the computer is to play, it will now show the board updated with the 
+        // computer’s symbol. 
+        
           System.out.println(GREEN + "Starting the game!" + RESET);
-//        Sayuni will do this:
-//        2) If the user selects 1 player (versus Minimax AI)
-//        a. The Human player should be asked their name
-//        b. The player must be prompted to choose their symbol (‘X’ or O’)
-//        c. The player with symbol ‘X’ should go first (computer or human player).
-//        d. The present board state will be displayed and:
-//        1. If the computer is to play, it will now show the board updated with the
-//        computer’s symbol.
-//        2. If it is the player’s turn, the player will be prompted for a row and column
-//        location to play.
-//        e. The board will then be checked for a winning state or draw and if it is not in a winning
-//        state or draw(tie), go to step d otherwise display the winner or declare a draw (tie).
 
+          char[][] board = new char[3][3];
+
+          for(int i = 0; i < 3; i ++)
+          {
+            for (int j = 0; j < 3; j++)
+            {
+                board[i][j] = '-';
+            }
+          }
+
+          System.out.print("Please enter your name: ");
+          String player = scanner.nextLine();
+
+          System.out.print("Choose your symbol (X or O): ");
+          char playerSymbol = scanner.nextLine().toUpperCase().charAt(0);
+
+          while(playerSymbol != 'X' && playerSymbol != 'O')
+          {
+            System.out.print("Invalid. Please choose X or O: ");
+            playerSymbol = scanner.nextLine().toUpperCase().charAt(0);
+          }
+
+          char computerSymbol = (playerSymbol == 'X') ? 'O' : 'X';
+
+          boolean playerTurn = (playerSymbol == 'X');
+          boolean gameEnded = false;
+
+        // Noella will complete this 
+        // 2. If it is the player’s turn, the player will be prompted for a row and column 
+        // location to play. 
+        // e. The board will then be checked for a winning state or draw and if it is not in a winning 
+        // state or draw(tie), go to step d otherwise display the winner or declare a draw (tie).
+         
     }
 
     public static void TwoPlayer()
@@ -236,5 +266,62 @@ public class Main
             p2Symbol = scanner.nextLine().toLowerCase();
         }
 
+    }
+
+    public static void printBoard(char[][] board)
+    {
+        System.out.println("\nBoard:");
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static boolean checkWin(char[][] board, char symbol)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (board[i][0] == symbol &&
+                    board[i][1] == symbol &&
+                    board[i][2] == symbol)
+                return true;
+        }
+
+        for (int j = 0; j < 3; j++)
+        {
+            if (board[0][j] == symbol &&
+                    board[1][j] == symbol &&
+                    board[2][j] == symbol)
+                return true;
+        }
+
+        if (board[0][0] == symbol &&
+                board[1][1] == symbol &&
+                board[2][2] == symbol)
+            return true;
+
+        if (board[0][2] == symbol &&
+                board[1][1] == symbol &&
+                board[2][0] == symbol)
+            return true;
+
+        return false;
+    }
+
+    public static boolean isFull(char[][] board)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (board[i][j] == '-')
+                    return false;
+            }
+        }
+        return true;
     }
 }
