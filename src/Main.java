@@ -79,12 +79,69 @@ public class Main
           boolean playerTurn = (playerSymbol == 'X');
           boolean gameEnded = false;
 
-        // Noella will complete this 
-        // 2. If it is the player’s turn, the player will be prompted for a row and column 
-        // location to play. 
-        // e. The board will then be checked for a winning state or draw and if it is not in a winning 
-        // state or draw(tie), go to step d otherwise display the winner or declare a draw (tie).
-         
+          // Main game loop - continues until game ends (win/draw)
+          while (!gameEnded) {
+              // Display current board state
+              printBoard(board);
+              
+              if (playerTurn) {
+                  // Player's turn - get user input for move
+                  System.out.println(YELLOW + player + "'s turn (" + playerSymbol + ")" + RESET);
+                  
+                  int row, col;
+                  do {
+                      // Prompt for row and column with validation
+                      System.out.print("Enter row (0-2): ");
+                      row = scanner.nextInt();
+                      System.out.print("Enter column (0-2): ");
+                      col = scanner.nextInt();
+                      scanner.nextLine(); // Consume newline
+                      
+                      // Validate input range and position availability
+                      if (row < 0 || row > 2 || col < 0 || col > 2) {
+                          System.out.println(RED + "Invalid position! Please enter values between 0 and 2." + RESET);
+                      } else if (board[row][col] != '-') {
+                          System.out.println(RED + "Position already taken! Please choose another position." + RESET);
+                      } else {
+                          break;
+                      }
+                  } while (true);
+
+                  board[row][col] = playerSymbol;
+              } else {
+                  // Computer's turn - make random move
+                  System.out.println(YELLOW + "Computer's turn (" + computerSymbol + ")" + RESET);
+                  
+                  int row, col;
+                  do {
+                      // Generate random position until finding empty spot
+                      row = (int)(Math.random() * 3);
+                      col = (int)(Math.random() * 3);
+                  } while (board[row][col] != '-');
+
+                  board[row][col] = computerSymbol;
+                  System.out.println("Computer placed " + computerSymbol + " at row " + row + ", column " + col);
+              }
+              
+              // Check for win condition after current move
+              if (checkWin(board, playerTurn ? playerSymbol : computerSymbol)) {
+                  printBoard(board);
+                  if (playerTurn) {
+                      System.out.println(GREEN + "Congratulations " + player + "! You won!" + RESET);
+                  } else {
+                      System.out.println(RED + "Computer wins! Better luck next time." + RESET);
+                  }
+                  gameEnded = true;
+              } else if (isFull(board)) {
+                  // Check for draw condition (board full, no winner)
+                  printBoard(board);
+                  System.out.println(YELLOW + "It's a draw!" + RESET);
+                  gameEnded = true;
+              } else {
+                  // Switch turns for next round
+                  playerTurn = !playerTurn;
+              }
+          }
     }
 
     public static void TwoPlayer()
